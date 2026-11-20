@@ -1,0 +1,6 @@
+numpy
+opencv-python
+pyarrow
+pillow
+pyyaml
+pydantic
