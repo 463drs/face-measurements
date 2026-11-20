@@ -1,0 +1,27 @@
+data:
+  paths:
+    - data/processed/300w.parquet
+
+landmark_model:
+  name: face_alignment    # key in the model registry
+  params:
+    device: auto          # cpu | cuda | auto
+    landmarks_type: 2D
+
+detector:
+  name: yunet
+  params:
+    score_threshold: 0.6
+    max_side: 1280        # downscale so the longer image side is <= this (never upscales)
+
+target_selector:
+  name: gt_match          # key in the selector registry
+  params:
+    iou_threshold: 0.3    # min IoU between predicted face box and GT box
+
+run:
+  out_root: runs
+  name: 300w_fan          # final dir: runs/300w_fan_<timestamp>
+  save_overlays: 20       # number of images with drawn predictions to save
+  seed: 1                 # seed for picking overlay images
+  notes: "baseline, default face-alignment settings"
