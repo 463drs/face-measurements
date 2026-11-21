@@ -4,3 +4,4 @@ pyarrow
 pillow
 pyyaml
 pydantic
+deeplake<4
