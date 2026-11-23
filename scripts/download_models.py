@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from src.facemeasure.detectors.yunet import DEFAULT_MODEL_PATH as YUNET_PATH
+from src.facemeasure.landmarks.face_alignment import DEFAULT_WEIGHTS_PATH as FAN2D_PATH
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,13 @@ MODELS = {
         ),
         sha256="8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4",
         path=YUNET_PATH,
+    ),
+    # Same URL as face-alignment 1.5.0 (`face_alignment.api.models_urls["2DFAN-4"]`); the file name
+    # carries the first 10 hex digits of its sha256.
+    "fan2d": ModelFile(
+        url="https://www.adrianbulat.com/downloads/python-fan/2DFAN4-11f355bf06.pth.tar",
+        sha256="11f355bf0693120222f5955ce3f9dc8fb5763ebb30a47d7906e509490d32e4aa",
+        path=FAN2D_PATH,
     ),
 }
 

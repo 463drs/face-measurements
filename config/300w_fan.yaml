@@ -5,8 +5,9 @@ data:
 landmark_model:
   name: face_alignment    # key in the model registry
   params:
-    device: auto          # cpu | cuda | auto
-    landmarks_type: 2D
+    device: auto          # auto | cpu | cuda | cuda:N
+    flip_test: true       # average with the flipped crop's heatmaps (~2x slower)
+    # crop_scale / center_shift_y default to face-alignment's crop for YuNet boxes (200/165, -0.12)
 
 detector:
   name: yunet
