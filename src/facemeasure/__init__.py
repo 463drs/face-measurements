@@ -1,7 +1,8 @@
 from .config import ComponentConfig, Config, DataConfig, RunConfig, load_config
 from .data import FaceDataset, Sample, write_parquet
-from .structures import Detection, Selection, SelectionStatus
+from .structures import CropResult, Detection, Landmarks, Selection, SelectionStatus
 from .detectors import Detector
+from .landmarks import LandmarkModel
 from .selectors import TargetSelector
 from .components import (
     DETECTORS,
@@ -15,12 +16,15 @@ from .components import (
 __all__ = [
     "ComponentConfig",
     "Config",
+    "CropResult",
     "DETECTORS",
     "DataConfig",
     "Detection",
     "Detector",
     "FaceDataset",
     "LANDMARK_MODELS",
+    "LandmarkModel",
+    "Landmarks",
     "RunConfig",
     "Sample",
     "Selection",

@@ -1,5 +1,5 @@
 from .detectors.yunet import YuNetDetector
-#from .landmarks.face_alignment import FaceAlignmentModel
+from .landmarks.face_alignment import FaceAlignmentModel
 from .selectors.gt_match import GTMatchSelector
 from .config import ComponentConfig
 
@@ -8,7 +8,7 @@ DETECTORS = {
 }
 
 LANDMARK_MODELS = {
-    #"face_alignment": FaceAlignmentModel
+    "face_alignment": FaceAlignmentModel,
 }
 
 TARGET_SELECTORS = {
