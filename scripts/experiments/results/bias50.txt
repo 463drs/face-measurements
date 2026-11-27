@@ -1,0 +1,30 @@
+# script: scripts.experiments.bias_exp
+# date: 2026-11-27T22:01:31+02:00
+# git commit: 39a5e98-dirty
+# config: 300w_fan
+# data: data/processed/300w.parquet
+# detector: yunet {'score_threshold': 0.6, 'max_side': 640}
+# target_selector: gt_match {'iou_threshold': 0.3}
+# landmark_model: face_alignment {'device': 'auto', 'flip_test': True}
+# refs: [165, 195]
+# heatmap_offsets: [-0.5, 0.0, 0.5]
+# gt_shifts_px: [0, 1]
+# flip_test: always on
+# images: first 50 of 599
+# GT convention: 0-based (300W .pts - 1) (points as stored in the parquet)
+
+selected (status ok): 50 of 50
+
+ ref   off       GT  meanNME%  medNME%  bias/IOD% (x, y) w/o jaw
+ 165  -0.5   stored      9.95     9.30  [-4.42 -5.3 ]
+ 165  -0.5 stored-1      9.02     8.12  [-3.48 -4.36]
+ 165   0.0   stored      7.14     6.23  [-0.84 -1.72]
+ 165   0.0 stored-1      6.94     6.10  [ 0.1  -0.79]
+ 165   0.5   stored      7.70     7.07  [2.74 1.86]
+ 165   0.5 stored-1      8.38     7.70  [3.67 2.79]
+ 195  -0.5   stored      8.24     7.85  [-3.84 -3.66]
+ 195  -0.5 stored-1      7.37     7.17  [-2.91 -2.72]   
+ 195   0.0   stored      6.05     5.62  [-0.82 -0.63]
+ 195   0.0 stored-1      5.94     5.50  [0.12 0.3 ]
+ 195   0.5   stored      6.71     6.40  [2.21 2.4 ]
+ 195   0.5 stored-1      7.41     7.23  [3.14 3.33]
