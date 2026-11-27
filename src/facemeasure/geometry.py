@@ -14,6 +14,15 @@ def points_to_box(points: np.ndarray) -> np.ndarray:
     return np.concatenate([points.min(0), points.max(0)])
 
 
+def union_box(*boxes: np.ndarray | Sequence[float] | None) -> np.ndarray:
+    """Smallest (4,) float32 box containing all given boxes; `None` entries are skipped."""
+    present = [np.asarray(b, dtype=np.float32).reshape(4) for b in boxes if b is not None]
+    if not present:
+        raise ValueError("union_box needs at least one box")
+    b = np.stack(present)
+    return np.concatenate([b[:, :2].min(0), b[:, 2:].max(0)])
+
+
 def box_iou(boxes: np.ndarray, box: np.ndarray) -> np.ndarray:
     """IoU of each of (N, 4) `boxes` with a single (4,) `box` -> (N,) float32."""
     boxes = np.asarray(boxes, dtype=np.float32).reshape(-1, 4)
