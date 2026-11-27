@@ -3,6 +3,7 @@
 Only the network and its heatmap decoder are taken from the package. Cropping and the mapping
 back to image pixels are done here, in float, with an exact inverse affine: the package's own
 `get_landmarks_from_image` rounds its crop and its output points to whole pixels.
+See docs/decisions.md "Use only the FAN network, with our own crop and float output".
 """
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from face_alignment.utils import flip, get_preds_fromhm
 
 from ..config import PROJECT_ROOT
 from ..geometry import apply_affine, crop_square
-from ..structures import Detection, Landmarks
+from ..structures import CropResult, Detection, Landmarks
 from .base import LandmarkModel
 
 # Fetched (checksum-verified) by `python -m scripts.download_models fan2d`.
@@ -26,8 +27,7 @@ HEATMAP_SIZE = 64
 """FAN output heatmap resolution; one heatmap cell spans CROP_SIZE / HEATMAP_SIZE = 4 crop pixels."""
 
 # Crop geometry of the `face-alignment` package: center moved up by 0.12 * box height, square side
-# 200 * (w + h) / reference_scale. reference_scale is 165 for YuNet/RetinaFace/SCRFD boxes, 195 for SFD.
-DEFAULT_CROP_SCALE = 200 / 165
+DEFAULT_CROP_SCALE = 200 / 195
 DEFAULT_CENTER_SHIFT_Y = -0.12
 
 
@@ -49,6 +49,7 @@ class FaceAlignmentModel(LandmarkModel):
     """
 
     schema = "ibug68"
+    crop_size = CROP_SIZE
 
     def __init__(
         self,
@@ -62,8 +63,8 @@ class FaceAlignmentModel(LandmarkModel):
         `device`: "auto" | "cpu" | "cuda" | "cuda:N".
         `flip_test`: also run on the horizontally flipped crop and average the heatmaps
             (~2x slower, slightly more accurate; on in the `face-alignment` package by default).
-        `crop_scale`, `center_shift_y`: passed to `crop_square` (with `size_mode="sum"`); the
-            defaults match the package's crop for YuNet boxes.
+        `crop_scale`, `center_shift_y`: passed to `crop_square` (with `size_mode="sum"`); defaults
+            200/195 and -0.12 (the package's crop uses 200/165 for YuNet boxes).
         `weights_path`: None uses `models/2DFAN4-11f355bf06.pth.tar`.
         """
         if crop_scale <= 0:
@@ -85,13 +86,17 @@ class FaceAlignmentModel(LandmarkModel):
         out = self._net(x)
         return out[-1] if isinstance(out, list) else out  # last hourglass stack is the prediction
 
-    @torch.inference_mode()
-    def _predict(self, image: np.ndarray, detection: Detection) -> Landmarks:
-        crop = crop_square(
+    def crop(self, image: np.ndarray, detection: Detection) -> CropResult:
+        """The exact `CROP_SIZE` x `CROP_SIZE` crop the network receives for `detection`."""
+        return crop_square(
             image, detection.box,
             scale=self.crop_scale, size_mode="sum", center_shift_y=self.center_shift_y,
             output_size=CROP_SIZE,
         )
+
+    @torch.inference_mode()
+    def _predict(self, image: np.ndarray, detection: Detection) -> Landmarks:
+        crop = self.crop(image, detection)
         # Same preprocessing as the package: RGB, CHW, float in [0, 1], no mean/std normalization.
         x = torch.from_numpy(crop.image).permute(2, 0, 1).unsqueeze(0).to(self.device, torch.float32) / 255.0
         hm = self._heatmaps(x)
