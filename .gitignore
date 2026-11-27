@@ -6,3 +6,4 @@ data/processed/*
 *.vscode
 models/*
 *.egg-info/
+pyrefly.toml

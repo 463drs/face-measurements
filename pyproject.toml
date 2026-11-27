@@ -20,5 +20,9 @@ dependencies = [
     "face-alignment==1.5.0",
 ]
 
+[project.optional-dependencies]
+# Only for scripts/download_300w.py (Activeloop Hub needs deeplake 3.x): pip install -e ".[data]"
+data = ["deeplake<4"]
+
 [tool.setuptools.packages.find]
 where = ["src"]

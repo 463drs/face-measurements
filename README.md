@@ -9,3 +9,8 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -e .
 # 3. Model weights into models/ (checksum-verified):
 python -m scripts.download_models
+# 4. (optional) 300W test set into data/raw/300W_FIXED, then convert it to data/processed/300w.parquet:
+pip install -e ".[data]"
+python -m scripts.download_300w
+python -m scripts.prepare_300w
+```
