@@ -12,13 +12,14 @@ import numpy as np
 from facemeasure import write_parquet
 
 SCHEMA = "ibug68"
-
+OFFSET = 1
 
 def read_pts(path: Path) -> np.ndarray:
     lines = path.read_text().splitlines()
     start = lines.index("{") + 1
     end = lines.index("}")
-    return np.array([line.split() for line in lines[start:end]], dtype=np.float32)
+    pts = np.array([line.split() for line in lines[start:end]], dtype=np.float32)
+    return pts - OFFSET
 
 
 def rows(root: Path):
@@ -31,7 +32,7 @@ def rows(root: Path):
             "image_path": image_path,
             "points": pts,
             "schema": SCHEMA,
-            "attributes": {"dataset": "300W_FIXED"},
+            "attributes": {"dataset": "300W_FIXED", "coordinates": "0-based (300W .pts - 1)"},
         }
 
 
