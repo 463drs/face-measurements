@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "facemeasure"
+version = "0.1.0"
+description = "Measuring face features using computer vision methods."
+requires-python = ">=3.11"
+# torch is deliberately not listed: install the build matching the machine first (see README).
+# face-alignment requires torch too, so pip would fetch a default (CPU) build if it is missing.
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "pyarrow",
+    "pillow",
+    "pyyaml",
+    "pydantic",
+    "matplotlib",
+    "face-alignment==1.5.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
-from src.facemeasure import write_parquet
+from facemeasure import write_parquet
 
 SCHEMA = "ibug68"
 

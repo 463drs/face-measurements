@@ -1,9 +1,0 @@
-numpy
-opencv-python
-pyarrow
-pillow
-pyyaml
-pydantic
-matplotlib
-torch  # install separately for your CUDA version, see README
-face-alignment==1.5.0

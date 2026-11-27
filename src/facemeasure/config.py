@@ -5,6 +5,7 @@ from typing import Annotated, Any
 import yaml
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict
 
+# src/facemeasure/config.py -> repo root. Needs an editable install (`pip install -e .`), not a copy in site-packages.
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_DIR = PROJECT_ROOT / "config"
 

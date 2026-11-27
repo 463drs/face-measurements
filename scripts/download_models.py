@@ -10,8 +10,8 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-from src.facemeasure.detectors.yunet import DEFAULT_MODEL_PATH as YUNET_PATH
-from src.facemeasure.landmarks.face_alignment import DEFAULT_WEIGHTS_PATH as FAN2D_PATH
+from facemeasure.detectors.yunet import DEFAULT_MODEL_PATH as YUNET_PATH
+from facemeasure.landmarks.face_alignment import DEFAULT_WEIGHTS_PATH as FAN2D_PATH
 
 
 @dataclass(frozen=True)

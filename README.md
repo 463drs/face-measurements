@@ -3,8 +3,9 @@ Measuring face features using computer vision methods.
 ## Setup
 
 ```bash
-# PyTorch first, matching your hardware (see https://pytorch.org/get-started/locally/), e.g. CPU only:
+# 1. PyTorch first, matching your hardware (see https://pytorch.org/get-started/locally/), e.g. CPU only:
 pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install -r requirements.txt
-python -m scripts.download_models    # model weights into models/ (checksum-verified)
-```
+# 2. The `facemeasure` package and its dependencies (pyproject.toml), as an editable install:
+pip install -e .
+# 3. Model weights into models/ (checksum-verified):
+python -m scripts.download_models
