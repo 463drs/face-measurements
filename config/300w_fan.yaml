@@ -7,13 +7,11 @@ landmark_model:
   params:
     device: auto          # auto | cpu | cuda | cuda:N
     flip_test: true       # average with the flipped crop's heatmaps (~2x slower)
-    # crop_scale / center_shift_y default to face-alignment's crop for YuNet boxes (200/165, -0.12)
-
 detector:
   name: yunet
   params:
-    score_threshold: 0.6
-    max_side: 1280        # downscale so the longer image side is <= this (never upscales)
+    score_threshold: 0.6    # docs/decisions.md "YuNet score_threshold kept at 0.6"
+    max_side: 640        # downscale so the longer image side is <= this (never upscales)
 
 target_selector:
   name: gt_match          # key in the selector registry
